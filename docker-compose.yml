@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+    influxdb:
+        container_name: influxdb
+        restart: on-failure
+        ports:
+            - '8086:8086'
+            - '8089:8089/udp'
+        volumes:
+            - './flux-data:/var/lib/influxdb2'
+            - './flux-config/flux-config.yml:/etc/influxdb2/config.yml'
+        environment:
+            - INFLUXDB_UDP_ENABLED=true
+        image: 'influxdb:latest'
+    grafana-oss:
+        container_name: grafana
+        restart: on-failure
+        volumes:
+                - ./grafana-config:/etc/grafana/
+                - ./grafana-data:/var/lib/grafana
+        ports:
+                - '3000:3000'
+        image: grafana/grafana-oss:latest
